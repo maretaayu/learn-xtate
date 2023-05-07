@@ -1,25 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { useMachine } from "@xstate/react";
+import { genderMachine } from "./gender-state-machine";
 
-function App() {
+export default function App() {
+  const [current, send] = useMachine(genderMachine);
+  const setMale = () => {
+    send("MALE_OPTION");
+  };
+  const setFemale = () => {
+    send("FEMALE_OPTION");
+  };
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <h2>{current.value}</h2>
+      <button disabled={current.matches("male")} onClick={setMale}>
+        Male
+      </button>
+      <button disabled={current.matches("female")} onClick={setFemale}>
+        Female
+      </button>
+    </>
   );
 }
-
-export default App;
